@@ -252,6 +252,7 @@
                 DispatchQueue.main.async {
                     self.masterCountryList = newCountryList
                     self.masterFavoriteList = newFavList
+                    print("new fav list \(newFavList.count)")
                     self.filterCountries()
                     self.filterFavorites()
                     self.sortCountries()

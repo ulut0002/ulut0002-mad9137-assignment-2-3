@@ -13,7 +13,7 @@ import Charts
 
     struct ContentView: View {
       @StateObject var countryModel: CountryViewModel = CountryViewModel()
-      @State private var selectedSegment = 2
+      @State private var selectedSegment = 0
 
         
         
@@ -33,13 +33,12 @@ import Charts
                 
 
               if selectedSegment == 0 {
-                  CountryListView(
-                    model: countryModel,
-                                  data: $countryModel.allCountries,
-                                  status: $countryModel.allCountriesStatus,
-                                  sortValue: $countryModel.allCountriesSortBy,
-                                  searchValue: $countryModel.allCountriesSearchText,
-                                         search: countryModel.filterCountries,
+                  CountryListView(model: countryModel,
+                                    data: $countryModel.allCountries,
+                                    status: $countryModel.allCountriesStatus,
+                                    sortValue: $countryModel.allCountriesSortBy,
+                                    searchValue: $countryModel.allCountriesSearchText,
+                                    search: countryModel.filterCountries,
                                          sort: countryModel.sortCountries,
                                          toggleFavorite: countryModel.toggleFavorite
                                         )
@@ -215,7 +214,7 @@ struct ChartView: View {
                                 CountryListItemView(country: country,
                                                     totalPopulation: model.getTotalPopulation,
                                                     totalArea: model.getTotalArea,
-                                                    handleFavoriteChange: {toggleFavorite(country.name)})
+                                                    handleFavoriteChange: toggleFavorite)
                             }
                         }
                     }
@@ -302,7 +301,7 @@ struct ChartView: View {
       var country: Country
         var totalPopulation: Double
         var totalArea: Double
-      var handleFavoriteChange: () -> Void
+        var handleFavoriteChange: (_ name: String) -> Void
 
       @State private var isSheetPresented = false
       
@@ -337,14 +336,14 @@ struct ChartView: View {
                     .foregroundColor(.yellow)
                     .padding(.trailing, 4)
                     .onTapGesture {
-                      handleFavoriteChange()
+                        handleFavoriteChange(country.name)
                     }
                 } else {
                   Image(systemName: "star")
                     .foregroundColor(.yellow)
                     .padding(.trailing, 4)
                     .onTapGesture {
-                      handleFavoriteChange()
+                        handleFavoriteChange(country.name)
                     }
                 }
               }else{
@@ -352,7 +351,7 @@ struct ChartView: View {
                     .foregroundColor(.yellow)
                     .padding(.trailing, 4)
                     .onTapGesture {
-                      handleFavoriteChange()
+                        handleFavoriteChange(country.name)
                     }
               }
                 
