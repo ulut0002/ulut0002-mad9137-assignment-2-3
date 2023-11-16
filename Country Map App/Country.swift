@@ -212,17 +212,18 @@
                 var country = masterCountryList[masterListIndex]
                 var newFavList: [Country] = []
                 var newCountryList:[Country] = masterCountryList
+//                
+//                if let fav = country.favorited {
+//                    if (fav){
+//                        country.favorited = false
+//                    }else{
+//                        country.favorited = true
+//                    }
+//                }else{
+//                    country.favorited = true
+//                }
                 
-                if let fav = country.favorited {
-                    if (fav){
-                        country.favorited = false
-                    }else{
-                        country.favorited = true
-                    }
-                }else{
-                    country.favorited = true
-                }
-                
+                country.favorited?.toggle()
                 newCountryList[masterListIndex] = country
                 
                 
@@ -256,6 +257,7 @@
                     self.filterCountries()
                     self.filterFavorites()
                     self.sortCountries()
+                    self.sortFavorites()
                     self.objectWillChange.send() // Explicitly notify SwiftUI
 
                 }
