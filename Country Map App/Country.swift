@@ -254,6 +254,7 @@
                     self.masterCountryList = newCountryList
                     self.masterFavoriteList = newFavList
                     print("new fav list \(newFavList.count)")
+                    print("country: \(self.masterCountryList[masterListIndex].id), fav status: \(self.masterCountryList[masterListIndex].favorited!))")
                     self.filterCountries()
                     self.filterFavorites()
                     self.sortCountries()
