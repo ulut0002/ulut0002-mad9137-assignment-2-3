@@ -36,7 +36,7 @@ import Charts
 
               if selectedSegment == 0 {
                   CountryListView(model: countryModel,
-                                    data: $countryModel.allCountries,
+                                    data: countryModel.allCountries,
                                     status: $countryModel.allCountriesStatus,
                                     sortValue: $countryModel.allCountriesSortBy,
                                     searchValue: $countryModel.allCountriesSearchText,
@@ -49,7 +49,7 @@ import Charts
 
                   CountryListView( 
                     model: countryModel,
-                    data: $countryModel.favCountries,
+                    data: countryModel.favCountries,
                                    status: $countryModel.favCountriesStatus,
                                    sortValue: $countryModel.favCountriesSortBy,
                                    searchValue: $countryModel.favCountriesSearchText,
@@ -160,7 +160,7 @@ struct ChartView: View {
 
     struct CountryListView: View{
         var model: CountryViewModel
-        @Binding var data: [Country]
+         var data: [Country]
         @Binding var status: FETCH_STATUS
         @Binding var sortValue: SORT_BY
         @Binding var searchValue: String
@@ -388,10 +388,11 @@ struct ChartView: View {
 
         
       var body: some View {
-         
+        
           
           ZStack {
-              Color(.green).opacity(0.1)
+
+              LinearGradient(gradient: Gradient(colors: [Constants.COLOR_BLUE_1, Constants.COLOR_BLUE_2]), startPoint: .topLeading, endPoint: .bottomTrailing).ignoresSafeArea(.all)
               VStack(alignment: .center) {
               Text(country.name)
                 .frame(alignment: .center)
@@ -405,7 +406,7 @@ struct ChartView: View {
               .resizable()
               .frame(width: 240, height: 180, alignment: .center)
               .aspectRatio(contentMode: .fit)
-              .cornerRadius(1)
+              .cornerRadius(20)
 
               if let capital = country.capital {
                 HStack {

@@ -6,13 +6,16 @@
 //
 
 import Foundation
-
+import SwiftUI
 /**
  A struct containing constants used throughout the application.
  */
 struct Constants {
     /// The key used to store and retrieve favorite items in UserDefaults.
     static let FAVORITES_KEY = "Favorites"
+    static let COLOR_BLUE_1 = Color(red: 100/255, green: 150/255, blue: 248/255).opacity(0.2)
+    static let COLOR_BLUE_2 = Color(red: 63/255, green: 115/255, blue: 224/255).opacity(0.5)
+
 }
 
 
