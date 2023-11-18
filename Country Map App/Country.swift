@@ -9,8 +9,8 @@
 
 
     class CountryViewModel: ObservableObject {
-        var masterCountryList: [Country] = []
-        var masterFavoriteList: [Country] = []
+         var masterCountryList: [Country] = []
+          var masterFavoriteList: [Country] = []
         
         @Published var allCountries:[Country] = []
         @Published var allCountriesStatus:FETCH_STATUS = .idle
@@ -186,11 +186,11 @@
         }
         
         func sortCountries() {
-            allCountries = sortCountryList(source: allCountries, sortBy: allCountriesSortBy)
+            self.allCountries = sortCountryList(source: allCountries, sortBy: allCountriesSortBy)
         }
         
         func sortFavorites() {
-            favCountries = sortCountryList(source: favCountries, sortBy: favCountriesSortBy)
+            favCountries = sortCountryList(source: self.favCountries, sortBy: favCountriesSortBy)
         }
 
         func filterCountries() {
@@ -198,70 +198,58 @@
             let filteredCountries = filterCountryList(source: masterCountryList , searchText: allCountriesSearchText)
             allCountries = sortCountryList(source: filteredCountries, sortBy: allCountriesSortBy)
             
+            
+            print(allCountries[0].favorited!)
+            
+//            allCountries = [allCountries[0]]
+            
         }
 
 
         func filterFavorites() {
-            let filteredCountries = filterCountryList(source: masterFavoriteList , searchText: favCountriesSearchText)
-            favCountries = sortCountryList(source: filteredCountries, sortBy: favCountriesSortBy)
+            let filteredCountries = filterCountryList(source: self.masterFavoriteList , searchText: favCountriesSearchText)
+            self.favCountries = sortCountryList(source: filteredCountries, sortBy: favCountriesSortBy)
         }
      
 
         func toggleFavorite(name: String) {
+      
             if let masterListIndex = masterCountryList.firstIndex(where: { $0.name.lowercased() == name.lowercased() }) {
-                var country = masterCountryList[masterListIndex]
-                var newFavList: [Country] = []
-                var newCountryList:[Country] = masterCountryList
-//                
-//                if let fav = country.favorited {
-//                    if (fav){
-//                        country.favorited = false
-//                    }else{
-//                        country.favorited = true
-//                    }
-//                }else{
-//                    country.favorited = true
-//                }
+                   masterCountryList[masterListIndex].favorited?.toggle()
                 
-                country.favorited?.toggle()
-                newCountryList[masterListIndex] = country
-                
-                
-                if let favorited = country.favorited {
+            
+                if let favorited = masterCountryList[masterListIndex].favorited {
                     if (favorited){
                         if masterFavoriteList.firstIndex(where: { $0.name.lowercased() == name.lowercased() }) == nil {
-                            newFavList = masterFavoriteList
-                            newFavList.append(country)
+                           
+                                masterFavoriteList.append(masterCountryList[masterListIndex])
                             
                         }
                     }else{
                         if let favoriteIndex = masterFavoriteList.firstIndex(where: {$0.name.lowercased() == name.lowercased()}) {
-                            newFavList = masterFavoriteList
-                            newFavList.remove(at: favoriteIndex)
-                             
+                         
+                                masterFavoriteList.remove(at: favoriteIndex)
+                            
                         }
                     }
                 }
                
                 if let encodedData = try? JSONEncoder().encode(masterFavoriteList) {
-                    // Save the encoded data to UserDefaults
-                    UserDefaults.standard.set(encodedData, forKey: Constants.FAVORITES_KEY)
+                        UserDefaults.standard.set(encodedData, forKey: Constants.FAVORITES_KEY)
+                    
                 } else {
-                    // Handle the encoding failure
                     print("Failed to encode the array of objects.")
                 }
+                
+                    filterCountries()
+                    filterFavorites()
+                
                 DispatchQueue.main.async {
-                    self.masterCountryList = newCountryList
-                    self.masterFavoriteList = newFavList
-                    print("new fav list \(newFavList.count)")
-                    print("country: \(self.masterCountryList[masterListIndex].id), fav status: \(self.masterCountryList[masterListIndex].favorited!))")
-                    self.filterCountries()
-                    self.filterFavorites()
-                    self.sortCountries()
-                    self.sortFavorites()
-                    self.objectWillChange.send() // Explicitly notify SwiftUI
+//                    self. = true
+                    self.objectWillChange.send()
 
-                }
+                                   }
+
             }
         }
         
@@ -350,7 +338,7 @@
 
           let decoder = JSONDecoder()
           let result = try decoder.decode([Country].self, from: data)
-
+       
           self.masterCountryList = result
         }
       }

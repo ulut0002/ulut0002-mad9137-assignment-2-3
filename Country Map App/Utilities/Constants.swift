@@ -30,6 +30,19 @@ enum FETCH_STATUS {
     case idle
 }
 
+
+/**
+ Enum representing different grouping options.
+ */
+enum GROUP_BY {
+    /// Indicates no grouping.
+    case none
+    
+    /// Group items by area.
+    case area
+}
+
+
 /**
  Enum representing different sorting criteria.
  */
@@ -142,25 +155,6 @@ struct Country: Codable, Identifiable, Equatable {
         return 0.0
     }
 
-    init(
-        name: String,
-        capital: String = "",
-        languages: [String] = [],
-        population: Double = 0.0,
-        flag: String = "",
-        region: String = "UndefinedRegion",
-        area: Double = 0.0,
-        favorited: Bool = false) {
-            self.capital = capital
-            self.name = name.uppercased()
-            self.languages = languages
-            self.population = population
-            self.flag = flag
-            self.region = region
-            self.area = area
-            self.favorited = favorited
-        }
-
     static func == (lhs: Country, rhs: Country) -> Bool {
         return lhs.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() ==
                     rhs.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
@@ -195,13 +189,3 @@ struct ChartData: Identifiable, Equatable {
 
 
 
-/**
- Enum representing different grouping options.
- */
-enum GROUP_BY {
-    /// Indicates no grouping.
-    case none
-    
-    /// Group items by area.
-    case area
-}

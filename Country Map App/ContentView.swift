@@ -14,6 +14,8 @@ import Charts
     struct ContentView: View {
       @StateObject var countryModel: CountryViewModel = CountryViewModel()
       @State private var selectedSegment = 0
+        
+        
 
         
         
@@ -144,9 +146,6 @@ struct ChartView: View {
         }.listStyle(PlainListStyle())
     
         
-         
-       
-        
     }
 }
 
@@ -209,8 +208,7 @@ struct ChartView: View {
                     //display items
                     List{
                         LazyVStack{
-                            ForEach(data){
-                                country in
+                            ForEach(data, id:\.id){ country in
                                 CountryListItemView(country: country,
                                                     totalPopulation: model.getTotalPopulation,
                                                     totalArea: model.getTotalArea,
