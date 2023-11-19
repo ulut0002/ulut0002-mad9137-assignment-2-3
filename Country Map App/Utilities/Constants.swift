@@ -7,17 +7,18 @@
 
 import Foundation
 import SwiftUI
+
+
 /**
  A struct containing constants used throughout the application.
  */
 struct Constants {
     /// The key used to store and retrieve favorite items in UserDefaults.
     static let FAVORITES_KEY = "Favorites"
-//    static let COLOR_BLUE_1 = Color(red: 100/255, green: 150/255, blue: 248/255).opacity(0.2)
-//    static let COLOR_BLUE_2 = Color(red: 63/255, green: 115/255, blue: 224/255).opacity(0.5)
-//    
-    static let COLOR_BLUE_2 = Color(red: 0/255, green: 65/255, blue: 106/255).opacity(0.2)
-    static let COLOR_BLUE_1 = Color(red: 228/255, green: 229/255, blue: 230/255).opacity(0.5)
+  
+    static let SHEET_GRADIENT_COLOR_1 = Color(red: 228/255, green: 229/255, blue: 230/255).opacity(0.5)
+    static let SHEET_GRADIENT_COLOR_2 = Color(red: 0/255, green: 65/255, blue: 106/255).opacity(0.2)
+    static let SHEET_TITLE_COLOR = Color(red: 245/255, green: 245/255, blue: 245/255)
     
 }
 
@@ -101,82 +102,7 @@ struct CountryData {
 
 
 
-/**
- Represents a model for country-related information conforming to Codable, Identifiable, and Equatable protocols.
 
- - Parameters:
-   - id: The identifier for the country, which is derived from its name.
-   - name: The name of the country.
-   - capital: The capital city of the country.
-   - languages: An array of languages spoken in the country.
-   - population: The population of the country.
-   - flag: The URL or identifier for the country's flag.
-   - region: The geographical region to which the country belongs.
-   - area: The total land area of the country.
-   - favorited: A boolean indicating whether the country is marked as a favorite.
-   - populationRank: The rank of the country based on population.
-   - populationPercentage: The percentage of the global population represented by the country.
-   - areaRank: The rank of the country based on land area.
-   - areaPercentage: The percentage of the global land area represented by the country.
-   - populationDensityRank: The rank of the country based on population density.
-   - populationDensity: The calculated population density of the country.
-
- - Note:
-   This struct serves as a data model for country-related information. It conforms to Codable for easy serialization, Identifiable for use in SwiftUI lists, and Equatable for comparison. The computed property `id` is derived from the country's name, and various statistical properties provide additional insights into the country's population, area, and density. The default values in the initializer are provided to handle optional parameters and set default values if not provided.
-
- Example:
- ```swift
- let country = Country(name: "Canada", population: 38008005, area: 9976140)
- print(country.populationDensity) // Output: 3.81
- */
-
-struct Country: Codable, Identifiable, Equatable, Hashable {
-    var id: String {
-        return name
-    }
-    let name: String
-    let capital: String?
-    let languages: [String]?
-    let population: Double?
-    let flag: String?
-    let region: String?
-    let area: Double?
-    var favorited: Bool?
-    
-    //statistics
-    var populationRank: Int?
-    var populationPercentage: Double?
-    var areaRank: Int?
-    var areaPercentage: Double?
-    var populationDensityRank: Int?
-    
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(name)
-          hasher.combine(capital)
-          hasher.combine(languages)
-          hasher.combine(favorited)
-          hasher.combine(region)
-          hasher.combine(area)
-      }
-  
-
-    var populationDensity: Double {
-        if let area = self.area, let population = self.population {
-            if (area != 0.0) && (population != 0.0) {
-                let actualPopulation = population
-                return actualPopulation / area
-            }
-        }
-        return 0.0
-    }
-
-    static func == (lhs: Country, rhs: Country) -> Bool {
-        return lhs.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() ==
-                    rhs.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() &&
-        lhs.favorited == rhs.favorited
-    }
-}
 
 
 

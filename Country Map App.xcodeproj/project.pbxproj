@@ -14,6 +14,7 @@
 		5745DA6C2B06870700055E64 /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5745DA6B2B06870700055E64 /* UtilityFunctions.swift */; };
 		5745DA6E2B06895400055E64 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5745DA6D2B06895400055E64 /* Constants.swift */; };
 		5745DA702B068B1E00055E64 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5745DA6F2B068B1E00055E64 /* Extensions.swift */; };
+		57A514F12B0A0545005F0692 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A514F02B0A0545005F0692 /* Country.swift */; };
 		57A530252B096514003231F8 /* Charts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A530242B096514003231F8 /* Charts.swift */; };
 		57A530292B0965AD003231F8 /* CountrySheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A530282B0965AD003231F8 /* CountrySheetView.swift */; };
 		57CF015E2AFFEF2200625CE6 /* Country_Map_AppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF015D2AFFEF2200625CE6 /* Country_Map_AppApp.swift */; };
@@ -23,7 +24,7 @@
 		57CF016F2AFFEF2300625CE6 /* Country_Map_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF016E2AFFEF2300625CE6 /* Country_Map_AppTests.swift */; };
 		57CF01792AFFEF2300625CE6 /* Country_Map_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF01782AFFEF2300625CE6 /* Country_Map_AppUITests.swift */; };
 		57CF017B2AFFEF2300625CE6 /* Country_Map_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF017A2AFFEF2300625CE6 /* Country_Map_AppUITestsLaunchTests.swift */; };
-		57CF01882AFFEF4400625CE6 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF01872AFFEF4400625CE6 /* Country.swift */; };
+		57CF01882AFFEF4400625CE6 /* CountryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF01872AFFEF4400625CE6 /* CountryModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		5745DA6B2B06870700055E64 /* UtilityFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityFunctions.swift; sourceTree = "<group>"; };
 		5745DA6D2B06895400055E64 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5745DA6F2B068B1E00055E64 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		57A514F02B0A0545005F0692 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
 		57A530242B096514003231F8 /* Charts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Charts.swift; sourceTree = "<group>"; };
 		57A530282B0965AD003231F8 /* CountrySheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountrySheetView.swift; sourceTree = "<group>"; };
 		57CF015A2AFFEF2200625CE6 /* Country Map App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Country Map App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -59,7 +61,7 @@
 		57CF01742AFFEF2300625CE6 /* Country Map AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Country Map AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57CF01782AFFEF2300625CE6 /* Country_Map_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country_Map_AppUITests.swift; sourceTree = "<group>"; };
 		57CF017A2AFFEF2300625CE6 /* Country_Map_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country_Map_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		57CF01872AFFEF4400625CE6 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
+		57CF01872AFFEF4400625CE6 /* CountryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,16 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		57A514EF2B0A0508005F0692 /* Country */ = {
+			isa = PBXGroup;
+			children = (
+				57A530282B0965AD003231F8 /* CountrySheetView.swift */,
+				57A514F02B0A0545005F0692 /* Country.swift */,
+				57CF01872AFFEF4400625CE6 /* CountryModel.swift */,
+			);
+			path = Country;
+			sourceTree = "<group>";
+		};
 		57A530232B0964E0003231F8 /* Charts */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,14 +144,13 @@
 		57CF015C2AFFEF2200625CE6 /* Country Map App */ = {
 			isa = PBXGroup;
 			children = (
+				57A514EF2B0A0508005F0692 /* Country */,
 				57A530232B0964E0003231F8 /* Charts */,
 				5745DA6A2B0686E700055E64 /* Utilities */,
 				57CF015D2AFFEF2200625CE6 /* Country_Map_AppApp.swift */,
 				57CF015F2AFFEF2200625CE6 /* ContentView.swift */,
 				57CF01612AFFEF2200625CE6 /* Assets.xcassets */,
 				57CF01632AFFEF2200625CE6 /* Preview Content */,
-				57CF01872AFFEF4400625CE6 /* Country.swift */,
-				57A530282B0965AD003231F8 /* CountrySheetView.swift */,
 			);
 			path = "Country Map App";
 			sourceTree = "<group>";
@@ -312,9 +323,10 @@
 			files = (
 				5745DA6E2B06895400055E64 /* Constants.swift in Sources */,
 				57A530292B0965AD003231F8 /* CountrySheetView.swift in Sources */,
+				57A514F12B0A0545005F0692 /* Country.swift in Sources */,
 				5745DA702B068B1E00055E64 /* Extensions.swift in Sources */,
 				57CF01602AFFEF2200625CE6 /* ContentView.swift in Sources */,
-				57CF01882AFFEF4400625CE6 /* Country.swift in Sources */,
+				57CF01882AFFEF4400625CE6 /* CountryModel.swift in Sources */,
 				57A530252B096514003231F8 /* Charts.swift in Sources */,
 				5745DA6C2B06870700055E64 /* UtilityFunctions.swift in Sources */,
 				57CF015E2AFFEF2200625CE6 /* Country_Map_AppApp.swift in Sources */,
