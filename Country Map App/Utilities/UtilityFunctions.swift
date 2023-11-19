@@ -37,6 +37,10 @@ func formatNumber(num: Double, fraction: Int = 0) -> String {
 }
 
 
+func shortenPopulation(num: Double) -> String {
+    return ""
+}
+
 
 /**
  Compares two Country objects based on the specified sorting criteria.

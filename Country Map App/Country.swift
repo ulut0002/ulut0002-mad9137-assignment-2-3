@@ -9,8 +9,8 @@
 
 
     class CountryViewModel: ObservableObject {
-         var masterCountryList: [Country] = []
-          var masterFavoriteList: [Country] = []
+        var masterCountryList: [Country] = []
+        var masterFavoriteList: [Country] = []
         
         @Published var allCountries:[Country] = []
         @Published var allCountriesStatus:FETCH_STATUS = .idle
@@ -135,7 +135,7 @@
                         }
                     }
                   
-                    areaStats.append(ChartData(type:"Rest of the World", value: ceil(totalArea - tempTotal)))
+//                    areaStats.append(ChartData(type:"Rest of the World", value: ceil(totalArea - tempTotal)))
               
                     tempTotal = 0.0
                     for country in top10ByPopulation {
@@ -144,7 +144,6 @@
                             populationStats.append(ChartData(type: country.name, value: population))
                         }
                     }
-                    populationStats.append(ChartData(type:"Rest of the World", value: ceil(totalPopulation - tempTotal)))
                     
                     
                     for country in top10ByDensity {
@@ -186,70 +185,74 @@
         }
         
         func sortCountries() {
-            self.allCountries = sortCountryList(source: allCountries, sortBy: allCountriesSortBy)
+            DispatchQueue.main.async {
+                self.allCountries = self.sortCountryList(source: self.allCountries, sortBy: self.allCountriesSortBy)
+            }
         }
         
         func sortFavorites() {
-            favCountries = sortCountryList(source: self.favCountries, sortBy: favCountriesSortBy)
+          
+                self.favCountries = self.sortCountryList(source: self.favCountries, sortBy: self.favCountriesSortBy)
+            
         }
 
         func filterCountries() {
 
-            let filteredCountries = filterCountryList(source: masterCountryList , searchText: allCountriesSearchText)
-            allCountries = sortCountryList(source: filteredCountries, sortBy: allCountriesSortBy)
+          
+                let filteredCountries = self.filterCountryList(source: self.masterCountryList , searchText: self.allCountriesSearchText)
+                self.allCountries = self.sortCountryList(source: filteredCountries, sortBy: self.allCountriesSortBy)
             
             
-            print(allCountries[0].favorited!)
-            
-//            allCountries = [allCountries[0]]
+          
             
         }
 
 
         func filterFavorites() {
-            let filteredCountries = filterCountryList(source: self.masterFavoriteList , searchText: favCountriesSearchText)
-            self.favCountries = sortCountryList(source: filteredCountries, sortBy: favCountriesSortBy)
+            DispatchQueue.main.async {
+                let filteredCountries = self.filterCountryList(source: self.masterFavoriteList , searchText: self.favCountriesSearchText)
+                self.favCountries = self.sortCountryList(source: filteredCountries, sortBy: self.favCountriesSortBy)
+            }
         }
      
 
         func toggleFavorite(name: String) {
-      
-            if let masterListIndex = masterCountryList.firstIndex(where: { $0.name.lowercased() == name.lowercased() }) {
-                   masterCountryList[masterListIndex].favorited?.toggle()
-                
-            
-                if let favorited = masterCountryList[masterListIndex].favorited {
-                    if (favorited){
-                        if masterFavoriteList.firstIndex(where: { $0.name.lowercased() == name.lowercased() }) == nil {
-                           
-                                masterFavoriteList.append(masterCountryList[masterListIndex])
-                            
-                        }
-                    }else{
-                        if let favoriteIndex = masterFavoriteList.firstIndex(where: {$0.name.lowercased() == name.lowercased()}) {
-                         
-                                masterFavoriteList.remove(at: favoriteIndex)
-                            
+            DispatchQueue.main.async {
+                if let masterListIndex = self.masterCountryList.firstIndex(where: { $0.name.lowercased() == name.lowercased() }) {
+                    
+                    self.masterCountryList[masterListIndex].favorited?.toggle()
+                    
+                    
+                    if let favorited = self.masterCountryList[masterListIndex].favorited {
+                        if (favorited){
+                            if self.masterFavoriteList.firstIndex(where: { $0.name.lowercased() == name.lowercased() }) == nil {
+                                
+                                self.masterFavoriteList.append(self.masterCountryList[masterListIndex])
+                                
+                            }
+                        }else{
+                            if let favoriteIndex = self.masterFavoriteList.firstIndex(where: {$0.name.lowercased() == name.lowercased()}) {
+                                
+                                self.masterFavoriteList.remove(at: favoriteIndex)
+                                
+                            }
                         }
                     }
-                }
-               
-                if let encodedData = try? JSONEncoder().encode(masterFavoriteList) {
-                        UserDefaults.standard.set(encodedData, forKey: Constants.FAVORITES_KEY)
                     
-                } else {
-                    print("Failed to encode the array of objects.")
+                    if let encodedData = try? JSONEncoder().encode(self.masterFavoriteList) {
+                        UserDefaults.standard.set(encodedData, forKey: Constants.FAVORITES_KEY)
+                        
+                    } else {
+                        print("Failed to encode the array of objects.")
+                    }
+                    
+                    self.filterCountries()
+                    self.filterFavorites()
+                    
+                    self.objectWillChange.send() //<==Here
+                   
+                    
                 }
-                
-                    filterCountries()
-                    filterFavorites()
-                
-                DispatchQueue.main.async {
-//                    self. = true
-                    self.objectWillChange.send()
-
-                                   }
-
             }
         }
         

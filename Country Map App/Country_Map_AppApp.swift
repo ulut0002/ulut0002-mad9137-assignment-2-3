@@ -26,6 +26,15 @@ private extension Country_Map_AppApp {
     
     func setUpDependencies() {
         SDImageCodersManager.shared.addCoder(SDImageSVGCoder.shared)
+        
+        // https://github.com/SDWebImage/SDWebImageSwiftUI - "Customization and configuration setup"
+        let cache = SDImageCache(namespace: "tiny")
+        cache.config.maxMemoryCost = 100 * 1024 * 1024 // 100MB memory
+        cache.config.maxDiskSize = 50 * 1024 * 1024 // 50MB disk
+        SDImageCachesManager.shared.addCache(cache)
+        SDWebImageManager.defaultImageCache = SDImageCachesManager.shared
+
+
     }
 }
 

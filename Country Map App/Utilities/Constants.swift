@@ -13,9 +13,12 @@ import SwiftUI
 struct Constants {
     /// The key used to store and retrieve favorite items in UserDefaults.
     static let FAVORITES_KEY = "Favorites"
-    static let COLOR_BLUE_1 = Color(red: 100/255, green: 150/255, blue: 248/255).opacity(0.2)
-    static let COLOR_BLUE_2 = Color(red: 63/255, green: 115/255, blue: 224/255).opacity(0.5)
-
+//    static let COLOR_BLUE_1 = Color(red: 100/255, green: 150/255, blue: 248/255).opacity(0.2)
+//    static let COLOR_BLUE_2 = Color(red: 63/255, green: 115/255, blue: 224/255).opacity(0.5)
+//    
+    static let COLOR_BLUE_2 = Color(red: 0/255, green: 65/255, blue: 106/255).opacity(0.2)
+    static let COLOR_BLUE_1 = Color(red: 228/255, green: 229/255, blue: 230/255).opacity(0.5)
+    
 }
 
 
@@ -127,7 +130,7 @@ struct CountryData {
  print(country.populationDensity) // Output: 3.81
  */
 
-struct Country: Codable, Identifiable, Equatable {
+struct Country: Codable, Identifiable, Equatable, Hashable {
     var id: String {
         return name
     }
@@ -146,6 +149,16 @@ struct Country: Codable, Identifiable, Equatable {
     var areaRank: Int?
     var areaPercentage: Double?
     var populationDensityRank: Int?
+    
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+          hasher.combine(capital)
+          hasher.combine(languages)
+          hasher.combine(favorited)
+          hasher.combine(region)
+          hasher.combine(area)
+      }
   
 
     var populationDensity: Double {
@@ -160,7 +173,8 @@ struct Country: Codable, Identifiable, Equatable {
 
     static func == (lhs: Country, rhs: Country) -> Bool {
         return lhs.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() ==
-                    rhs.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+                    rhs.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() &&
+        lhs.favorited == rhs.favorited
     }
 }
 

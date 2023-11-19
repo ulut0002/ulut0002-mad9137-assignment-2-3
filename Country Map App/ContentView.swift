@@ -6,18 +6,15 @@
     // SVG Image: https://stackoverflow.com/questions/73100626/uploading-svg-images-to-swiftui/73401775#73401775
     //
 
+
+import SwiftUI
+//import Charts
 import SDWebImageSVGCoder
 import SDWebImageSwiftUI
-import SwiftUI
-import Charts
 
     struct ContentView: View {
-      @StateObject var countryModel: CountryViewModel = CountryViewModel()
-      @State private var selectedSegment = 0
-        
-        
-
-        
+      @ObservedObject var countryModel: CountryViewModel = CountryViewModel()
+      @State private var selectedSegment = 1
         
       var body: some View {
           
@@ -36,7 +33,7 @@ import Charts
 
               if selectedSegment == 0 {
                   CountryListView(model: countryModel,
-                                    data: countryModel.allCountries,
+                                    data: $countryModel.allCountries,
                                     status: $countryModel.allCountriesStatus,
                                     sortValue: $countryModel.allCountriesSortBy,
                                     searchValue: $countryModel.allCountriesSearchText,
@@ -49,7 +46,7 @@ import Charts
 
                   CountryListView( 
                     model: countryModel,
-                    data: countryModel.favCountries,
+                    data: $countryModel.favCountries,
                                    status: $countryModel.favCountriesStatus,
                                    sortValue: $countryModel.favCountriesSortBy,
                                    searchValue: $countryModel.favCountriesSearchText,
@@ -69,87 +66,6 @@ import Charts
       }
     }
 
-
-
-struct ChartSection: View {
-    var title: String
-    var data: [ChartData]
-    @State var displayAnnotations: Bool = false
-
-
-    var body: some View {
-        
-        ZStack {
-            Color.gray.opacity(0.1)
-            VStack {
-                Text(title).bold()
-                Chart {
-                    ForEach(data.indices, id: \.self) { index in
-                        let datum = data[index]
-                        
-                        SectorMark(angle: .value(title, datum.value))
-                            .annotation(position: .overlay, alignment: .center, content: {
-                                if (displayAnnotations){
-                                    Text("\(datum.type)")
-                                        .font(.footnote)
-                                        .foregroundColor(.white)
-                                        .padding(4)
-                                        .background(Color.black.opacity(0.6))
-                                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                                        .offset(y: -10)
-                                }
-                            })
-                            .foregroundStyle(by: .value("Type", datum.type))
-                            .opacity(0.2)
-                        
-                        
-                    }
-                }.onTapGesture {
-                    displayAnnotations.toggle()
-                }
-                .chartLegend(position: .top, alignment: .center, spacing: 10)
-
-                .padding(.vertical, 10)
-                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-                .frame(minHeight: 400)
-            }.padding(32)
-        }
-    }
-}
-
-
-struct ChartBar: View {
-    var title: String
-    var data: [ChartData]
-    @State var displayAnnotations: Bool = false
-
-    var body: some View{
-        VStack{
-            
-        }
-    }
-}
-
-
-struct ChartView: View {
-    @ObservedObject var model: CountryViewModel
-    var body: some View {
-        let top10ByArea = model.areaStats
-        let top10ByPopulation = model.populationStats
-        let top10ByDensity = model.densityStats
-        
-        List{
-            VStack(spacing: 32){
-                ChartSection(title: "Top 10 countries by population", data: top10ByPopulation)
-                ChartSection(title: "Top 10 countries by area", data: top10ByArea)
-            }
-        }.listStyle(PlainListStyle())
-    
-        
-    }
-}
-
-
     struct ContentView_Previews: PreviewProvider {
       static var previews: some View {
         ContentView()
@@ -159,8 +75,8 @@ struct ChartView: View {
     // handles both all-countries view and favorites view
 
     struct CountryListView: View{
-        var model: CountryViewModel
-         var data: [Country]
+        @ObservedObject var model: CountryViewModel
+        @Binding var data: [Country]
         @Binding var status: FETCH_STATUS
         @Binding var sortValue: SORT_BY
         @Binding var searchValue: String
@@ -366,11 +282,10 @@ struct ChartView: View {
         .onTapGesture {
           //                isSheetPresented.toggle()
           isSheetPresented = true
-          print("Tabbed on \(country.name) \(isSheetPresented)")
         }
         .sheet(isPresented: $isSheetPresented) {
 
-          CountrySheetView(country: country, totalPopulation: totalPopulation, totalArea: totalArea)
+            CountrySheetView(country: country, totalPopulation: totalPopulation, totalArea: totalArea, isSheetPresented: $isSheetPresented, toggleFavorite: handleFavoriteChange)
         }
       }
 
@@ -378,99 +293,4 @@ struct ChartView: View {
 
 
 
-
-    struct CountrySheetView: View {
-        var country: Country
-        var totalPopulation: Double
-        var totalArea: Double
-        
-      
-
-        
-      var body: some View {
-        
-          
-          ZStack {
-
-              LinearGradient(gradient: Gradient(colors: [Constants.COLOR_BLUE_1, Constants.COLOR_BLUE_2]), startPoint: .topLeading, endPoint: .bottomTrailing).ignoresSafeArea(.all)
-              VStack(alignment: .center) {
-              Text(country.name)
-                .frame(alignment: .center)
-                .font(.largeTitle)
-
-              WebImage(
-                url: URL(string: country.flag!), options: [],
-                context: [.imageThumbnailPixelSize: CGSize.zero]
-              )
-              .placeholder { ProgressView().frame(width: 12, height: 12) }
-              .resizable()
-              .frame(width: 240, height: 180, alignment: .center)
-              .aspectRatio(contentMode: .fit)
-              .cornerRadius(20)
-
-              if let capital = country.capital {
-                HStack {
-                  Text("Capital City:").bold().frame(alignment: .leading)
-                  Text(capital)
-                  Spacer()
-                }.padding(.vertical, 8)
-              }
-
-              if let population = country.population {
-
-                HStack {
-                  Text("Population:").bold().frame(alignment: .leading)
-                  Text(formatNumber(num: population))+Text(" people") +  Text(" (Rank: \(country.populationRank ?? 0))").font(.system(size: 15))
-                  Spacer()
-                }.padding(.vertical, 8)
-
-              }
-
-              if let area = country.area {
-
-                HStack {
-                  Text("Area:").bold().frame(alignment: .leading)
-                  Text("\(formatNumber(num: area))") + Text(" km").font(.system(size: 16))
-                    + Text("2")
-                    .font(.system(size: 10))
-                    .baselineOffset(8) + Text(" (Rank: \(country.areaRank ?? 0))").font(.system(size: 15))
-                  Spacer()
-                }.padding(.vertical, 8)
-              }
-
-              if let region = country.region {
-                HStack {
-                  Text("Region:").bold().frame(alignment: .leading)
-                  Text(region)
-                  Spacer()
-                }.padding(.vertical, 8)
-              }
-
-              if let languages = country.languages {
-                HStack {
-                  Text("Languages:").bold().frame(alignment: .leading)
-                  Text(languages.joined(separator: " ,"))
-                  Spacer()
-                }.padding(.vertical, 8)
-              }
-              HStack {
-                Text("Population Density:").bold().frame(alignment: .leading)
-                Text(formatNumber(num: country.populationDensity)) + Text(" / sq km")
-                  + Text("2")
-                  .font(.system(size: 10))
-                  .baselineOffset(8) + Text(" (Rank: \(country.populationDensityRank ?? 0))").font(.system(size: 15))
-                Spacer()
-              }.padding(.vertical, 8)
-                
-               
-                
-                
-                  
-
-              }.padding(12)
-          }
-
-      }
-
-    }
 
