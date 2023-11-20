@@ -12,14 +12,28 @@ import SwiftUI
 /**
  A struct containing constants used throughout the application.
  */
-struct Constants {
+struct CONSTANTS {
     /// The key used to store and retrieve favorite items in UserDefaults.
     static let FAVORITES_KEY = "Favorites"
   
     static let SHEET_GRADIENT_COLOR_1 = Color(red: 228/255, green: 229/255, blue: 230/255).opacity(0.5)
     static let SHEET_GRADIENT_COLOR_2 = Color(red: 0/255, green: 65/255, blue: 106/255).opacity(0.2)
     static let SHEET_TITLE_COLOR = Color(red: 245/255, green: 245/255, blue: 245/255)
+    static let EXCLUDED_REGIONS:[String] = ["Polar","Antarctic Ocean","Antarctic"]
     
+    static let DATA_URL = "https://raw.githubusercontent.com/shah0150/data/main/countries_data.json"
+    
+}
+
+
+enum IMAGE_NAMES {
+    static let CLOSE_SHEET = "chevron.down"
+    static let MENU = "ellipsis"
+    static let CLEAR_TEXT = "xmark.circle.fill"
+    static let SORT = "arrow.up.arrow.down"
+    static let FAVORITED = "star.fill"
+    static let NOT_FAVORITED = "star"
+    static let FETCH_ERROR_VIEW = "flag.slash"
 }
 
 
@@ -58,19 +72,19 @@ enum SORT_BY {
     case alphabetically_asc
       
     /// Sort alphabetically in descending order.
-    case alphabetically_dec
+    case alphabetically_desc
       
     /// Sort by population in ascending order.
     case population_asc
       
     /// Sort by population in descending order.
-    case population_dec
+    case population_desc
       
     /// Sort by area in ascending order.
     case area_asc
       
     /// Sort by area in descending order.
-    case area_dec
+    case area_desc
       
     /// Sort by population density in ascending order.
     case density_asc
@@ -78,6 +92,11 @@ enum SORT_BY {
     /// Sort by population density in descending order.
     case density_desc
 }
+
+
+
+
+
 
 /**
  Represents the data structure for country-related information.

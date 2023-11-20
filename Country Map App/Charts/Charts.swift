@@ -20,9 +20,7 @@ enum CHART_STYLE{
 }
 
 
-
-
-//source chatGPT
+// Pre-defined chart colors for data visualization. Source:chatGPT
 let chartColors: [Color] = [
     Color(red: 255/255, green: 99/255, blue: 71/255),  // Tomato
     Color(red: 30/255, green: 144/255, blue: 255/255), // Dodger Blue
@@ -47,35 +45,154 @@ let chartColors: [Color] = [
 ]
 
 
+// SwiftUI view for displaying various charts
 struct ChartView: View {
     @ObservedObject var model: CountryViewModel
     var body: some View {
-        let top10ByArea = model.areaStats
-        let top10ByPopulation = model.populationStats
-        let top10ByDensity = model.densityStats
-        
-        List{
-            VStack(spacing: 32){
-                ChartSection(title: "Top 10 countries by population", data: top10ByPopulation,style: .sector)
-                ChartSection(title: "Top 10 countries by area", data: top10ByArea, style: .bar)
-            }
-        }.listStyle(PlainListStyle())
-    
-        
-    }
-}
-
-struct ChartBar: View {
-    var title: String
-    var data: [ChartData]
-    @State var displayAnnotations: Bool = false
-
-    var body: some View{
-        VStack{
-            
+        // Check for different status to determine the view to display
+        if (model.allCountriesStatus == .error){
+            FetchErrorView()
         }
+        
+        if (model.allCountriesStatus == .loading){
+            LoadingView()
+        }
+        
+        
+        if (model.allCountriesStatus == .idle){
+            // Extract data for different chart sections
+            let top10ByArea = model.areaStats
+            let top10ByPopulation = model.populationStats
+            let regionByPopulationStats = model.regionByPopulationStats
+            let regionByLanguageCountStats = model.regionByLanguageCountStats
+            let regionByCountryCountStats = model.regionByCountryCountStats
+            
+            // Display different chart sections using a list
+            List{
+                VStack(spacing: 32){
+                    ChartSection(title: "Top 10 countries by population", data: top10ByPopulation,style: .sector)
+                    ChartSection(title: "Top 10 countries by area", data: top10ByArea, style: .bar)
+                    PieSection(title: "Regions by Population", data: regionByPopulationStats)
+                    PieSection(title: "Regions by Language Count", data: regionByLanguageCountStats)
+                    DefaultBarChart(title: "Regions by Country Count", data: regionByCountryCountStats)
+                    
+                }
+            }.listStyle(PlainListStyle())
+        }
+        
     }
 }
+
+// SwiftUI view for displaying a pie chart section
+
+struct PieSection: View {
+  var title: String
+  var data: [ChartData]
+
+
+  @State var displayAnnotations: Bool = true
+    
+  var body: some View {
+    ZStack {
+      STYLE.BACKGROUND
+      VStack {
+        Text(title).bold()
+
+      
+          Chart {
+            ForEach(data.indices, id: \.self) { index in
+              let datum = data[index]
+
+                SectorMark(angle: .value(title, datum.value),innerRadius: .ratio(0.6))
+                .annotation(
+                  position: .overlay, alignment: .center,
+                  content: {
+                    if displayAnnotations {
+                        Text("\(datum.type) - \(formatNumber(num: datum.value, fraction:0))")
+                        .font(.footnote)
+                        .foregroundColor(.white)
+                        .padding(4)
+                        .background(Color.black.opacity(0.7))
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .offset(y: -10)
+                    }
+                  }
+                )
+                .foregroundStyle(by: .value("Type", datum.type))
+                .opacity(0.6)
+                
+            }
+          }.onTapGesture {
+            displayAnnotations.toggle()
+          }
+          .chartLegend(position: .top, alignment: .center, spacing: 10)
+
+          .frame(maxWidth: /*@START_MENU_TOKEN@*/ .infinity /*@END_MENU_TOKEN@*/)
+          .frame(idealHeight:  200)
+          .padding(.horizontal, 24)
+        
+      }.padding(.vertical, 24)
+
+    }
+
+  }
+}
+
+// SwiftUI view for displaying a default bar chart section
+struct DefaultBarChart: View {
+  var title: String
+  var data: [ChartData]
+
+  @State var displayAnnotations: Bool = false
+    
+  var body: some View {
+    ZStack {
+      STYLE.BACKGROUND
+      VStack {
+        Text(title).bold()
+
+       
+            Chart {
+              ForEach(data.indices, id: \.self) { index in
+                let datum = data[index]
+                      
+                  BarMark(x: .value(title, datum.value) , y: .value(title,
+                                                                           "\(datum.id)"))
+                  .annotation(
+                    position: .overlay, alignment: .center,
+                    content: {
+                      if displayAnnotations {
+                          Text("\(formatNumber(num:datum.value, fraction:0))")
+                          .font(.footnote)
+                          .foregroundColor(.white)
+                          .padding(4)
+                          .background(Color.black.opacity(0.7))
+                          .clipShape(RoundedRectangle(cornerRadius: 8))
+                          .offset(y: -10)
+                      }
+                    }
+                  )
+                  .foregroundStyle( chartColors[index % chartColors.count])
+                  .opacity(0.8)
+                            
+              }
+            }.onTapGesture {
+                displayAnnotations.toggle()
+              }
+            .chartLegend(position: .top, alignment: .top)
+            .frame(maxWidth: .infinity, idealHeight:  800)
+            .padding(.horizontal, 24)
+            .padding(.vertical, 24)
+           
+        }
+      }.padding(.vertical, 24)
+
+    
+
+  }
+}
+
+
 
 struct ChartSection: View {
   var title: String
@@ -150,5 +267,3 @@ struct ChartSection: View {
 
   }
 }
-
-//BarMark(x: .value("Country", datum.name), y: .value("Area", datum.value))

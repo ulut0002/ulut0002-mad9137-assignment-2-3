@@ -4,11 +4,14 @@
 //
 //  Created by Serdar Ulutas on 2023-11-18.
 //
+// SVG Image: https://stackoverflow.com/questions/73100626/uploading-svg-images-to-swiftui/73401775#73401775
+//
 
 import SwiftUI
 import SDWebImageSVGCoder
 import SDWebImageSwiftUI
 
+// MARK: - CountrySheetView
 
 struct CountrySheetView: View {
     var country: Country
@@ -19,10 +22,13 @@ struct CountrySheetView: View {
     
     var body: some View {
         ZStack(alignment: .top) {
-            LinearGradient(gradient: Gradient(colors: [Constants.SHEET_GRADIENT_COLOR_1, Constants.SHEET_GRADIENT_COLOR_2]), startPoint: .topLeading, endPoint: .bottomTrailing).ignoresSafeArea(.all)
+            LinearGradient(gradient: Gradient(colors: [CONSTANTS.SHEET_GRADIENT_COLOR_1, CONSTANTS.SHEET_GRADIENT_COLOR_2]), 
+                           startPoint: .topLeading,
+                           endPoint: .bottomTrailing)
+            .ignoresSafeArea(.all)
      
             
-            // Top header section with three buttons: 1) Chevron down 2) Title 3) Ellipsis button
+            // Content View
             VStack(alignment: .center) {
                 CountrySheetHeaderView(country: country, isSheetPresented: $isSheetPresented, toggleFavorite: toggleFavorite)
                 CountrySheetDetailView(country: country)
@@ -33,54 +39,67 @@ struct CountrySheetView: View {
 }
 
 
-
+// MARK: - CountrySheetHeaderView
 struct CountrySheetHeaderView: View {
+
     var country: Country
     @Binding var isSheetPresented: Bool
     var toggleFavorite: (_ name: String) -> Void
+    
+    @Environment(\.colorScheme) var colorScheme
+
 
     var body: some View {
         HStack(alignment: .center){
-            Button("", systemImage:"chevron.down"){
+            // Close Button
+            Button("", systemImage:IMAGE_NAMES.CLOSE_SHEET){
                 isSheetPresented = false
             }.font(.caption)
                 .padding(0)
-                .foregroundColor(Color.black)
+                .foregroundColor(colorScheme == .light ? Color.black : Color.white)
+            
             
             Spacer()
             
+            // Country Title
             Text(country.name)
                 .font(country.name.count >= 20 ? .headline : .title2)
                 .multilineTextAlignment(.center).kerning(1.3)
             
             Spacer()
             
-            Menu("", systemImage: "ellipsis"){
+            // Menu Button
+            Menu("", systemImage: IMAGE_NAMES.MENU){
                 if let favorited = country.favorited {
                     Button(favorited ? "Remove from Favorites" :"Add to Favorites"){
                         toggleFavorite(country.id)
                     }
                 }
                 
-            }.padding(0).foregroundColor(Color.black)
-        }.padding(.horizontal, 24).padding(.vertical, 16).background(Constants.SHEET_TITLE_COLOR)
-        
+            }.padding(0)
+                .foregroundColor(colorScheme == .light ? Color.black : Color.white)
+        }.padding(.horizontal, 24).padding(.vertical, 16)
     }
 }
 
+// MARK: - CountrySheetDetailView
 struct CountrySheetDetailView: View {
     var country: Country
     var body: some View {
         VStack(alignment: .center){
+            // Country Flag
             if let flag = country.flag {
                 WebImage(url: URL(string: flag), options: [],context: [.imageThumbnailPixelSize: CGSize.zero])
-                    .placeholder { ProgressView().frame(width: 12, height: 12) }
+                    .placeholder {
+                        ProgressView().frame(width: 12, height: 12)
+                    }
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(maxWidth: 300, idealHeight: .infinity, alignment: .center)
                     .cornerRadius(20)
             }
             
+            // Detail Information
             VStack(alignment: .leading){
                 
                 // Display Capital
@@ -142,4 +161,3 @@ struct CountrySheetDetailView: View {
         }
     }
 }
-

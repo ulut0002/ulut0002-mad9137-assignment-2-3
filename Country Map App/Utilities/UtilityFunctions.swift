@@ -37,9 +37,6 @@ func formatNumber(num: Double, fraction: Int = 0) -> String {
 }
 
 
-func shortenPopulation(num: Double) -> String {
-    return ""
-}
 
 
 /**
@@ -70,15 +67,15 @@ func shortenPopulation(num: Double) -> String {
     switch sortBy {
         case .alphabetically_asc:
             return country1.name < country2.name
-        case .alphabetically_dec:
+        case .alphabetically_desc:
             return country1.name > country2.name
         case .population_asc:
             return country1.population ?? 0.0 < country2.population ?? 0.0
-        case .population_dec:
+        case .population_desc:
             return country1.population ?? 0.0 > country2.population ?? 0.0
         case .area_asc:
             return country1.area ?? 0.0 < country2.area ?? 0.0
-        case .area_dec:
+        case .area_desc:
             return country1.area ?? 0.0 > country2.area ?? 0.0
         case .density_asc:
             return country1.populationDensity < country2.populationDensity
