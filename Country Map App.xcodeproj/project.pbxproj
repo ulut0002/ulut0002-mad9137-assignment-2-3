@@ -60,6 +60,10 @@
 		5745DA6B2B06870700055E64 /* UtilityFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityFunctions.swift; sourceTree = "<group>"; };
 		5745DA6D2B06895400055E64 /* CONSTANTS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CONSTANTS.swift; sourceTree = "<group>"; };
 		5745DA6F2B068B1E00055E64 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		576F8C4F2C1FA8D700EBD6EF /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		576F8C502C1FAA8200EBD6EF /* image1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image1.png; sourceTree = "<group>"; };
+		576F8C512C1FAA8200EBD6EF /* image2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image2.png; sourceTree = "<group>"; };
+		576F8C522C1FAA8200EBD6EF /* image3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image3.png; sourceTree = "<group>"; };
 		57A514F02B0A0545005F0692 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
 		57A530242B096514003231F8 /* Charts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Charts.swift; sourceTree = "<group>"; };
 		57A530282B0965AD003231F8 /* CountrySheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountrySheetView.swift; sourceTree = "<group>"; };
@@ -140,6 +144,16 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		576F8C532C1FAA9200EBD6EF /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				576F8C502C1FAA8200EBD6EF /* image1.png */,
+				576F8C512C1FAA8200EBD6EF /* image2.png */,
+				576F8C522C1FAA8200EBD6EF /* image3.png */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
 		57A514EF2B0A0508005F0692 /* Country */ = {
 			isa = PBXGroup;
 			children = (
@@ -163,6 +177,8 @@
 		57CF01512AFFEF2100625CE6 = {
 			isa = PBXGroup;
 			children = (
+				576F8C532C1FAA9200EBD6EF /* Assets */,
+				576F8C4F2C1FA8D700EBD6EF /* README.md */,
 				57CF015C2AFFEF2200625CE6 /* Country Map App */,
 				57CF016D2AFFEF2300625CE6 /* Country Map AppTests */,
 				57CF01772AFFEF2300625CE6 /* Country Map AppUITests */,
